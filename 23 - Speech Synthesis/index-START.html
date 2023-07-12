@@ -38,15 +38,20 @@
 
   msg.text = document.querySelector('[name="text"]').value;
 
-  function populateVoices(){
+  function populateVoices() {
     voices = this.getVoices();
     voicesDropdown.innerHTML = voices
-    
-      .map(voice => `<option value="${voice.name}" (${voice.land})</option>`)
+      .filter(voice => voice.lang.includes('en'))
+      .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`)
       .join('');
   }
 
-  speechSynthesis.addEventListener('voiceschange', populateVoices);
+  function setVoice() {
+    msg.voice = voices.find(voice => voice.name === this.value);
+    toggle();
+  }
+
+  speechSynthesis.addEventListener('voiceschanged', populateVoices);
 
 </script>
 
